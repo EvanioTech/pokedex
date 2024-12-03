@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Image, Button, TouchableOpacity } from 'react-native';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native'
 
 const SearchPokemons = () => {
+    const navigation = useNavigation();
   // Estado para armazenar os dados do Pokémon
   const [pokemon, setPokemon] = useState(null);
   const [loading, setLoading] = useState(false);  // Estado para mostrar carregando
@@ -74,7 +76,7 @@ const SearchPokemons = () => {
   return (
     <View style={styles.container}>
       <Image
-        source={require('./imagens/pk.png')}
+        source={require('../../../imagens/pk.png')}
         style={{ width: '300', height: '100', marginBottom: 65 }}
       />
       {pokemon && (

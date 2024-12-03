@@ -1,7 +1,10 @@
 import React from "react";
 import { View,Text, StyleSheet , Image, TouchableOpacity} from "react-native";
+import { SearchPokemons } from "../searchPokemon";
+import { useNavigation } from '@react-navigation/native'
 
 const Home = () => {
+    const navigation = useNavigation();
     return(
         <View style={styles.Container}>
             
@@ -20,7 +23,8 @@ const Home = () => {
                  A sua pokedex!
             </Text>
             <TouchableOpacity style={styles.btn}>
-                <Text style={{fontSize:20,color: '#FFF'}}>Ver Pokémons!</Text>
+                <Text style={{fontSize:20,color: '#FFF'}} 
+                onPress={ () => navigation.navigate("SearchPokemons")}>Ver Pokémons!</Text>
             </TouchableOpacity>
         </View>
     )
