@@ -1,10 +1,21 @@
-import React from "react";
+import React , {useContext}from "react";
 import { View,Text, StyleSheet , Image, TouchableOpacity} from "react-native";
 import { SearchPokemons } from "../searchPokemon";
 import { useNavigation } from '@react-navigation/native'
+import { PokeContext } from "../../context";
 
 const Home = () => {
     const navigation = useNavigation();
+    const { 
+        pokemon,
+        loading,
+        error,
+        pokemonId,
+        pokebola,
+        novopoke,
+        afterpoke,
+        capture,
+    } = useContext(PokeContext)
     return(
         <View style={styles.Container}>
             

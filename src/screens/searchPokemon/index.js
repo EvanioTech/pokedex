@@ -1,60 +1,23 @@
-import  { useEffect, useState } from 'react';
+import  {  useContext } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Image, Button, TouchableOpacity } from 'react-native';
-import axios from 'axios';
+
 import { useNavigation } from '@react-navigation/native'
+import { PokeContext } from '../../context';
 
 const SearchPokemons = () => {
     const navigation = useNavigation();
-  // Estado para armazenar os dados do Pokémon
-  const [pokemon, setPokemon] = useState(null);
-  const [loading, setLoading] = useState(false);  // Estado para mostrar carregando
-  const [error, setError] = useState(null);      // Estado para possíveis erros
-  const [pokemonId, setPokemonId] = useState(1);  // Estado para armazenar o ID do Pokémon
-  const [pokebola, setPokebola] = useState([]); // Pokémons capturados
+    const { 
+        pokemon,
+        loading,
+        error,
+        pokemonId,
+        pokebola,
+        novopoke,
+        afterpoke,
+        capture,
+    } = useContext(PokeContext)
 
-  // Função para pegar dados de um Pokémon específico
-  const fetchPokemon = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonId}/`);
-      setPokemon(response.data);  // Armazena os dados do Pokémon
-      setLoading(false);           // Altera o estado de carregamento
-    } catch (error) {
-      setError('Erro ao carregar Pokémon');
-      setLoading(false);
-    }
-  };
-
-  // Função para incrementar o ID do Pokémon
-  const novopoke = () => {
-    setPokemonId(prevId => prevId + 1);  // Incrementa o ID de forma correta
-  };
-
-  // Função para voltar o ID do Pokémon
-  const afterpoke = () => {
-    if (pokemonId > 1) {
-      setPokemonId(prevId => prevId - 1); 
-    } else {
-      alert('Você está vendo o primeiro Pokémon da lista');
-    }
-  };
-
-  // Função para capturar o Pokémon
-  const capture = () => {
-    if (pokemon) {
-      // Adiciona o Pokémon à Pokébola, armazenando o nome e a imagem
-      setPokebola((prevPokes) => [...prevPokes, { name: pokemon.name, image: pokemon.sprites.front_default }]);
-      console.log('Pokémon adicionado');
-    }
-  };
-
-  // UseEffect para chamar a função quando o ID mudar
-  useEffect(() => {
-    fetchPokemon(); // Recarrega o Pokémon toda vez que o ID mudar
-  }, [pokemonId]); // O useEffect depende do pokemonId
-
-  // Se ainda estiver carregando, exibe um carregando
+    // Se ainda estiver carregando, exibe um carregando
   if (loading) {
     return (
       <View style={styles.container}>
@@ -62,6 +25,9 @@ const SearchPokemons = () => {
       </View>
     );
   }
+  
+
+  
 
   // Se houve erro
   if (error) {
@@ -101,21 +67,16 @@ const SearchPokemons = () => {
             </Text>
           </TouchableOpacity>
 
-          {/* Exibindo Pokémon capturados */}
-          <View style={styles.pokebolaContainer}>
-            <Text style={styles.pokebolaTitle}>Pokémons Capturados:</Text>
-            {pokebola.length > 0 ? (
-              <View style={styles.pokebolaList}>
-                {pokebola.map((poke, index) => (
-                  <View key={index} style={styles.pokebolaItem}>
-                    <Image style={styles.pokebolaImage} source={{ uri: poke.image }} />
-                    <Text>{poke.name}</Text>
-                  </View>
-                ))}
-              </View>
-            ) : (
-              <Text>Você ainda não capturou nenhum Pokémon.</Text>
-            )}
+         
+          <View>
+            <TouchableOpacity
+            style={styles.btnpokedex}
+             onPress={ () => navigation.navigate("Mypokedex")}>
+                <Text>
+                    Ver Pokedex
+                    </Text>
+                    </TouchableOpacity>
+            
           </View>
         </>
       )}
@@ -182,6 +143,13 @@ const styles = StyleSheet.create({
     height: 50,
     marginRight: 10,
   },
+  btnpokedex: {
+    marginTop: 10,
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: '#ADFF2F',
+  }
 });
 
 export {SearchPokemons};
